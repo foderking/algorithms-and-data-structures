@@ -18,7 +18,7 @@ def testSuite(buildFunc, *funcs):
         returns => the value of the execution, time taken, name of function
     funcs is a tuple of functions to test
     """
-    max = 1000000
+    max_no = 1000000
     x = []
     y1 = []
     y2 = []
@@ -30,11 +30,15 @@ def testSuite(buildFunc, *funcs):
     no_funcs = len(funcs)
     no_elems = 1
 
-    if no_funcs <= 1:
-        raise "Needs at least one function"
+    if no_funcs < 1:
+        raise ValueError
 
-    while no_elems < max:
-        if no_funcs == 2:
+    while no_elems < max_no:
+        if no_funcs == 1:
+            _, y11, name1 = buildFunc(no_elems, funcs[0])
+
+            y1.append(y11)
+        elif no_funcs == 2:
             _, y11, name1 = buildFunc(no_elems, funcs[0])
             _, y22, name2 = buildFunc(no_elems, funcs[1])
             # _, y11 =buildArray(max, no_elems)
@@ -53,9 +57,10 @@ def testSuite(buildFunc, *funcs):
             y3.append(y33)
 
         x.append(no_elems)
-        no_elems *= 10
+        no_elems *= 2#10
 
     y3 = [0] * 6 if not y3 else y3
+    y2 = [0] * 6 if not y2 else y2
 
     plt.xlabel("No of elements")
     plt.ylabel("Time taken")
@@ -66,6 +71,7 @@ def testSuite(buildFunc, *funcs):
 
     plt.legend()
     plt.show()
+
 
 def test():
     """
